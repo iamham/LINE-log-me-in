@@ -27,7 +27,7 @@ const generateLINEURL = () => {
   return 'https://access.line.me/oauth2/v2.1/authorize?' + qs.encode(LINEData)
 }
 
-const processRedirectLINEProfile = (code,res) => {
+const processRedirectLINEProfile = (code, res) => {
   const url = 'https://api.line.me/oauth2/v2.1/token'
   const option = {
     method: 'POST',
@@ -53,8 +53,10 @@ const processRedirectLINEProfile = (code,res) => {
     })
   })
   .catch((error) => {
-    res.render('error', {
-      error: error
+    const LINELogin = generateLINEURL()
+    res.render('index', {
+      title: 'Log me in',
+      LINELogin: LINELogin,
     })
   })
 }
@@ -70,8 +72,10 @@ app.get('/', (req, res) => {
 
 app.get('/callback', (req, res) => {
   if (req.query.error || (req.query.state !== serverSecret)) {
+    const LINELogin = generateLINEURL()
     res.render('index', {
       title: 'Log me in',
+      LINELogin: LINELogin
     })
   }
 
