@@ -45,6 +45,7 @@ const getProfileFromLINE = (code) => {
   axios(option)
   .then((res) => {
     console.log(`statusCode: ${res.statusCode}`)
+    console.log(res)
     return res.data
   })
   .catch((error) => {
