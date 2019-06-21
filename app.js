@@ -27,7 +27,7 @@ const generateLINEURL = () => {
   return 'https://access.line.me/oauth2/v2.1/authorize?' + qs.encode(LINEData)
 }
 
-const getProfileFromLINE = (code,res) => {
+const processRedirectLINEProfile = (code,res) => {
   const url = 'https://api.line.me/oauth2/v2.1/token'
   const option = {
     method: 'POST',
@@ -47,20 +47,20 @@ const getProfileFromLINE = (code,res) => {
     console.log(`statusCode: ${res.status}`)
     const decodedData = jwt.decode(response.data.id_token,'264314ba82d87dc4986c920185a5e5d5')
     res.render('profile', {
-      title: 'Profile',
+      title: `Hi, ${decodedData.name}`,
       name: decodedData.name,
       picture: decodedData.picture
     })
-    return decodedData
   })
   .catch((error) => {
-    console.error(error, 'Error')
-    return error
+    res.render('error', {
+      error: error
+    })
   })
 }
 
 // Route
-app.get('/', (req, res, next) => {
+app.get('/', (req, res) => {
   const LINELogin = generateLINEURL()
   res.render('index', {
     title: 'Log me in - LINE',
@@ -68,19 +68,14 @@ app.get('/', (req, res, next) => {
   })
 })
 
-app.get('/callback', (req, res, next) => {
-  if (req.query.error) {
+app.get('/callback', (req, res) => {
+  if (req.query.error || (req.query.state !== serverSecret)) {
     res.render('index', {
       title: 'Log me in - LINE',
     })
   }
 
-  if (req.query.state !== serverSecret) res.render('index', {
-    title: 'Log me in - LINE',
-  })
-
-  const profile = getProfileFromLINE(req.query.code, res)
-  
+  processRedirectLINEProfile(req.query.code, res)
 })
 
 module.exports = app
