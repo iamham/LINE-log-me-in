@@ -1,6 +1,6 @@
 const express = require('express')
 const path = require('path')
-const querystring = require('querystring')
+const qs = require('querystring')
 const axios = require('axios')
 
 const serverSecret = 'assignment'
@@ -23,26 +23,31 @@ const generateLINEURL = () => {
     state: serverSecret,
     scope: 'profile'
   }
-  return 'https://access.line.me/oauth2/v2.1/authorize?' + querystring.encode(LINEData)
+  return 'https://access.line.me/oauth2/v2.1/authorize?' + qs.encode(LINEData)
 }
 
 const getProfileFromLINE = (code) => {
-  axios.post('https://api.line.me/oauth2/v2.1/token', {
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    grant_type: 'authorization_code',
-    code: code,
-    redirect_uri: 'http://line.hiaham.com/callback',
-    client_id: '1590448222',
-    client_secret: '264314ba82d87dc4986c920185a5e5d5'
-  })
+  const url = 'https://api.line.me/oauth2/v2.1/token'
+  const option = {
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    data: qs.stringify({
+      grant_type: 'authorization_code',
+      code: code,
+      redirect_uri: 'http://line.hiaham.com/callback',
+      client_id: '1590448222',
+      client_secret: '264314ba82d87dc4986c920185a5e5d5'
+    }),
+    url
+  }
+
+  axios(option)
   .then((res) => {
     console.log(`statusCode: ${res.statusCode}`)
-    return res
+    return res.data
   })
   .catch((error) => {
-    console.error(error)
+    console.error(error, 'ERROR !')
   })
 }
 
@@ -67,10 +72,9 @@ app.get('/callback', (req, res, next) => {
   })
 
   const profile = getProfileFromLINE(req.query.code)
-  const authCode = req.query.code
   res.render('index', {
     title: 'Profile - LINE',
-    data: res
+    data: profile
   })
 })
 
