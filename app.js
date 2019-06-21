@@ -27,7 +27,7 @@ const generateLINEURL = () => {
   return 'https://access.line.me/oauth2/v2.1/authorize?' + qs.encode(LINEData)
 }
 
-const getProfileFromLINE = async (code) => {
+const getProfileFromLINE = (code,res) => {
   const url = 'https://api.line.me/oauth2/v2.1/token'
   const option = {
     method: 'POST',
@@ -43,9 +43,14 @@ const getProfileFromLINE = async (code) => {
   }
 
   axios(option)
-  .then((res) => {
+  .then((response) => {
     console.log(`statusCode: ${res.status}`)
-    const decodedData = jwt.decode(res.data.id_token,'264314ba82d87dc4986c920185a5e5d5')
+    const decodedData = jwt.decode(response.data.id_token,'264314ba82d87dc4986c920185a5e5d5')
+    res.render('profile', {
+      title: 'Profile',
+      name: decodedData.name,
+      picture: decodedData.picture
+    })
     return decodedData
   })
   .catch((error) => {
@@ -63,7 +68,7 @@ app.get('/', (req, res, next) => {
   })
 })
 
-app.get('/callback', async (req, res, next) => {
+app.get('/callback', (req, res, next) => {
   if (req.query.error) {
     res.render('index', {
       title: 'Log me in - LINE',
@@ -74,13 +79,8 @@ app.get('/callback', async (req, res, next) => {
     title: 'Log me in - LINE',
   })
 
-  const profile = await getProfileFromLINE(req.query.code)
-  console.log(profile)
-  res.render('profile', {
-    title: 'Profile',
-    name: profile.name,
-    picture: profile.picture
-  })
+  const profile = getProfileFromLINE(req.query.code, res)
+  
 })
 
 module.exports = app
