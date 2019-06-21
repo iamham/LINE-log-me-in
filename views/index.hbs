@@ -4,7 +4,10 @@
   html, body {
     background: #00b4ff;
     width: 100%;
-    height: 100%
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
   }
   #content {
     margin: auto;
@@ -14,12 +17,15 @@
     font-size: 1.2em;
     line-height: 1.2;
   }
+  #login {
+    margin-top: 15px;
+  }
 </style>
 
 <div id='content'>
-    <h1>{{title}}</h1>
-    <p>Welcome to {{title}}</p>
+    <h1>{{Log me in}}</h1>
+    <p>Log yourself in and I will tell you secret</p>
     <a href='{{LINELogin}}'>
-    <img src='images/line_login.png' width='50'>
+    <img id='login' src='images/line_login.png' width='150'>
     </a>
 </div>
