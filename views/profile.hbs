@@ -24,17 +24,22 @@
   #photo {
     margin: auto;
     margin-top: 30px;
-    margin-bottom: 50px;
     border-radius: 10px;
+  }
+  #footer {
+    font-size: 10px;
+    text-align: center;
   }
 </style>
 
 <div id='content'>
   <h2>Hi, {{name}}.</h2>
   Nice photo you have there ;)<br />
-  <img id='photo' src='{{picture}}' width='200' alt='Profile image'/>
+  <div id='profile-picture'>
+    <img id='photo' src='{{picture}}' width='200' alt='Profile image'/>
+  </div>
   <h3 id='footer'>
     No need to logout, we didn't collect any information <br />
-    with love <3 Sarun Peetasai
+    with love <span style='color: red'><3</span> Sarun Peetasai
   </h3>
 </div>
