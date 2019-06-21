@@ -63,7 +63,7 @@ app.get('/', (req, res, next) => {
   })
 })
 
-app.get('/callback', (req, res, next) => {
+app.get('/callback', async (req, res, next) => {
   if (req.query.error) {
     res.render('index', {
       title: 'Log me in - LINE',
