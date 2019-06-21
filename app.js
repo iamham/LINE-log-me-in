@@ -74,7 +74,7 @@ app.get('/callback', (req, res, next) => {
   const profile = getProfileFromLINE(req.query.code)
   res.render('index', {
     title: 'Profile - LINE',
-    data: profile
+    data: JSON.stringify(profile)
   })
 })
 
