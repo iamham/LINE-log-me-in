@@ -75,6 +75,7 @@ app.get('/callback', (req, res, next) => {
   })
 
   const profile = getProfileFromLINE(req.query.code)
+  console.log(profile)
   res.render('profile', {
     title: 'Profile',
     name: profile.name,
