@@ -27,30 +27,30 @@ const generateLINEURL = () => {
 }
 
 const getProfileFromLINE = (code) => {
+  console.log('CODE !', code)
   const url = 'https://api.line.me/oauth2/v2.1/token'
-  // const option = {
-  //   method: 'POST',
-  //   headers: { 'content-type': 'application/x-www-form-urlencoded' },
-  //   data: qs.stringify({
-  //     grant_type: 'authorization_code',
-  //     code: code,
-  //     redirect_uri: 'http://line.hiaham.com/callback',
-  //     client_id: '1590448222',
-  //     client_secret: '264314ba82d87dc4986c920185a5e5d5'
-  //   }),
-  //   url
-  // }
+  const option = {
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    data: qs.stringify({
+      grant_type: 'authorization_code',
+      code: code,
+      redirect_uri: 'http://line.hiaham.com/callback',
+      client_id: '1590448222',
+      client_secret: '264314ba82d87dc4986c920185a5e5d5'
+    }),
+    url
+  }
 
-  // axios(option)
-  // .then((res) => {
-  //   console.log(`statusCode: ${res.statusCode}`)
-  //   return res.data
-  // })
-  // .catch((error) => {
-  //   console.error(error, 'ERROR !')
-  //   return error
-  // })
-  return code
+  axios(option)
+  .then((res) => {
+    console.log(`statusCode: ${res.statusCode}`)
+    return res.data
+  })
+  .catch((error) => {
+    console.error(error, 'ERROR !')
+    return error
+  })
 }
 
 // Route
@@ -74,9 +74,9 @@ app.get('/callback', (req, res, next) => {
   })
 
   const profile = getProfileFromLINE(req.query.code)
-  res.render('index', {
-    title: 'Profile - LINE',
-    data: JSON.stringify(profile)
+  res.render('profile', {
+    title: 'Profile',
+    profile: JSON.stringify(profile)
   })
 })
 
