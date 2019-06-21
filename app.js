@@ -28,7 +28,6 @@ const generateLINEURL = () => {
 }
 
 const getProfileFromLINE = (code) => {
-  console.log('CODE !', code)
   const url = 'https://api.line.me/oauth2/v2.1/token'
   const option = {
     method: 'POST',
@@ -46,13 +45,11 @@ const getProfileFromLINE = (code) => {
   axios(option)
   .then((res) => {
     console.log(`statusCode: ${res.status}`)
-    console.log(res.data)
     const decodedData = jwt.decode(res.data.id_token,'264314ba82d87dc4986c920185a5e5d5')
-    console.log('decoded Data', decodedData)
     return decodedData
   })
   .catch((error) => {
-    console.error(error, 'ERROR !123')
+    console.error(error, 'Error')
     return error
   })
 }
@@ -80,7 +77,8 @@ app.get('/callback', (req, res, next) => {
   const profile = getProfileFromLINE(req.query.code)
   res.render('profile', {
     title: 'Profile',
-    profile: JSON.stringify(profile)
+    name: profile.name,
+    picture: profile.picture
   })
 })
 
