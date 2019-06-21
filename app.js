@@ -47,7 +47,7 @@ const processRedirectLINEProfile = (code,res) => {
     console.log(`statusCode: ${res.status}`)
     const decodedData = jwt.decode(response.data.id_token,'264314ba82d87dc4986c920185a5e5d5')
     res.render('profile', {
-      title: `Hi, ${decodedData.name}`,
+      title: 'Hi, ' + decodedData.name,
       name: decodedData.name,
       picture: decodedData.picture
     })
@@ -63,7 +63,7 @@ const processRedirectLINEProfile = (code,res) => {
 app.get('/', (req, res) => {
   const LINELogin = generateLINEURL()
   res.render('index', {
-    title: 'Log me in - LINE',
+    title: 'Log me in',
     LINELogin: LINELogin
   })
 })
@@ -71,7 +71,7 @@ app.get('/', (req, res) => {
 app.get('/callback', (req, res) => {
   if (req.query.error || (req.query.state !== serverSecret)) {
     res.render('index', {
-      title: 'Log me in - LINE',
+      title: 'Log me in',
     })
   }
 

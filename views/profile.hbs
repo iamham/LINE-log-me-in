@@ -17,10 +17,13 @@
     font-size: 1.2em;
     line-height: 1.2;
   }
+  #photo {
+    margin-top: 30px;
+  }
 </style>
 
 <div id='content'>
   <h2>{{title}}</h2>
-  Your name: {{name}}
-  <img src='{{picture}}' width='200' />
+  Hi, {{name}}<br />. Nice photo you have there ;)<br />
+  <img id='photo' src='{{picture}}' width='200' />
 </div>
