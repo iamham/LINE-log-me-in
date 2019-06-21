@@ -52,7 +52,7 @@ const processRedirectLINEProfile = (code, res) => {
       picture: decodedData.picture
     })
   })
-  .catch((error) => {
+  .catch(() => {
     const LINELogin = generateLINEURL()
     res.render('index', {
       title: 'Log me in',
