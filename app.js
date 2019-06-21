@@ -48,6 +48,7 @@ const getProfileFromLINE = (code) => {
   })
   .catch((error) => {
     console.error(error, 'ERROR !')
+    return error
   })
 }
 
