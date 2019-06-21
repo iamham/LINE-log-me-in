@@ -45,6 +45,7 @@ const getProfileFromLINE = (code) => {
   axios(option)
   .then((res) => {
     console.log(`statusCode: ${res.status}`)
+    console.log(res)
     const decodedData = jwt.decode(res.data.id_token,'264314ba82d87dc4986c920185a5e5d5')
     return decodedData
   })
