@@ -20,7 +20,7 @@ const generateLINEURL = () => {
     response_type: 'code',
     client_id: '1590448222',
     redirect_uri: 'http://line.hiaham.com/callback',
-    state: assignment,
+    state: serverSecret,
     scope: 'profile'
   }
   return 'https://access.line.me/oauth2/v2.1/authorize?' + querystring.encode(LINEData)
