@@ -27,7 +27,7 @@ const generateLINEURL = () => {
   return 'https://access.line.me/oauth2/v2.1/authorize?' + qs.encode(LINEData)
 }
 
-const getProfileFromLINE = (code) => {
+const getProfileFromLINE = async (code) => {
   const url = 'https://api.line.me/oauth2/v2.1/token'
   const option = {
     method: 'POST',
@@ -46,7 +46,6 @@ const getProfileFromLINE = (code) => {
   .then((res) => {
     console.log(`statusCode: ${res.status}`)
     const decodedData = jwt.decode(res.data.id_token,'264314ba82d87dc4986c920185a5e5d5')
-    console.log(`decodedData: ${decodedData}`)
     return decodedData
   })
   .catch((error) => {
@@ -75,7 +74,7 @@ app.get('/callback', (req, res, next) => {
     title: 'Log me in - LINE',
   })
 
-  const profile = getProfileFromLINE(req.query.code)
+  const profile = await getProfileFromLINE(req.query.code)
   console.log(profile)
   res.render('profile', {
     title: 'Profile',
