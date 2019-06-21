@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const qs = require('querystring')
 const axios = require('axios')
+const jwt = require('jwt-simple')
 
 const serverSecret = 'assignment'
 
@@ -44,9 +45,10 @@ const getProfileFromLINE = (code) => {
 
   axios(option)
   .then((res) => {
-    console.log(`statusCode: ${res.statusCode}`)
-    console.log(res)
-    return res.data
+    console.log(`statusCode: ${res.status}`)
+    const decodedData = jwt.decode(res.data.id_token,'264314ba82d87dc4986c920185a5e5d5')
+    console.log('decoded Data', decodedData)
+    return decodedData
   })
   .catch((error) => {
     console.error(error, 'ERROR !123')
